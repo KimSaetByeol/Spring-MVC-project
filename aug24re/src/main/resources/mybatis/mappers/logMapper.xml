@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="log">
+
+	<insert parameterType="logDTO" id="writeLog">
+		INSERT INTO slog (sl_ip, sl_target,
+		<if test="sl_id != null">sl_id, </if>
+		sl_data)VALUES(#{sl_ip}, #{sl_target},
+		<if test="sl_id != null">#{sl_id}, </if>
+		#{sl_data})
+	</insert>
+	
+	<select parameterType="hashMap" id="logList" resultType="logDTO">
+		SELECT * FROM slog 
+		<choose>
+			<when test="searchName == 'ip'">WHERE sl_ip LIKE CONCAT('%',#{search},'%') </when>
+			<when test="searchName == 'id'">WHERE sl_id LIKE CONCAT('%',#{search},'%') </when>
+			<when test="searchName == 'date'">WHERE sl_date LIKE CONCAT('%',#{search},'%') </when>
+			<when test="searchName == 'content'">WHERE sl_data LIKE CONCAT('%',#{search},'%') </when>
+		</choose>
+		ORDER BY sl_no DESC LIMIT #{startPage}, #{lastPage} 
+	</select>
+	
+	
+	<select id="logTotalList" resultType="Integer">
+		SELECT COUNT(*) FROM slog 
+		<choose>
+			<when test="searchName == 'ip'">WHERE sl_ip LIKE CONCAT('%',#{search},'%') </when>
+			<when test="searchName == 'id'">WHERE sl_id LIKE CONCAT('%',#{search},'%') </when>
+			<when test="searchName == 'date'">WHERE sl_date LIKE CONCAT('%',#{search},'%') </when>
+			<when test="searchName == 'content'">WHERE sl_data LIKE CONCAT('%',#{search},'%') </when>
+		</choose>
+	</select>
+</mapper>

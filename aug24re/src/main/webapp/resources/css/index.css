@@ -1,0 +1,44 @@
+@charset "UTF-8";
+<style type="text/css">
+html, body{
+	margin:0 auto;
+	padding:0;
+	background-color: pink;
+}
+body{
+}
+#container{
+	padding:0;
+	margin: 0 auto;
+	width: 900px;
+	height: 100%;
+}
+#header{
+	width: 900px;
+	height: 150px;
+	background-color: purple;
+}
+#menu{
+	width: 900px;
+	height: 50px;
+	background-color: white;
+	position: absolute;
+	margin-top: 100px;
+	padding: 10px;
+	box-sizing: border-box;
+}
+#main{
+	width: 900px;
+	min-height: calc(100vh - 150px);
+	height:100%;
+	background-color: pink;
+}
+#loginform{
+	margin-top: 5px;
+	text-align: center;
+	height: 50px;
+	width: 900px;
+	background-color: white;
+	position: absolute;
+}
+</style>

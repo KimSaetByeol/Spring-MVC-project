@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<typeAlias type="java.lang.Integer" alias="integer"/>
+		<typeAlias type="com.saetbyeol.web.TestDTO" alias="testDTO"/>
+		<typeAlias type="com.saetbyeol.web.login.LoginDTO" alias="loginDTO"/>
+		<typeAlias type="com.saetbyeol.web.admin.MemberDTO" alias="memberDTO"/>
+		<typeAlias type="com.saetbyeol.web.log.LogDTO" alias="logDTO"/>
+		<!-- 내가 만든 클래스를 mybatis가 사용할 수 있도록 등록 -->
+	</typeAliases>
+</configuration>

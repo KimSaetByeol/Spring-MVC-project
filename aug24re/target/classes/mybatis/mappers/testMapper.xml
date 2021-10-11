@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="test">
+
+	<select id="boardList" resultType="testDTO" parameterType="hashMap">
+		SELECT ROW_NUMBER() OVER(ORDER BY sb_no ASC) AS sb_nno,sb_no, sb_cate, sc_category, sm_no, sb_title, sb_content, sb_date, sb_count, sb_del, sb_file, sm_id, sm_name FROM sbboardview WHERE sb_cate=#{sb_cate} LIMIT #{startPage}, #{lastPage} 
+	</select>
+	
+	<select id="totalList" resultType="Integer">
+		SELECT COUNT(*) FROM sbboardview WHERE sb_cate=#{sb_cate} LIMIT 1
+	</select>
+	
+	<select id="getCategory" resultType="String">
+		SELECT sc_category FROM scategory WHERE sc_no=#{sc_cate}
+	</select>
+	
+	<insert id="write" parameterType="TestDTO">
+		INSERT INTO sboard (sb_title, sb_content, sm_no, sb_cate) 
+		VALUES (#{sb_title}, #{sb_content}, 
+			(SELECT sm_no FROM smember WHERE sm_id=#{sm_id}), #{sb_cate}) 
+	</insert>
+	
+	<select resultType="TestDTO" id="detail" parameterType="integer">
+		SELECT * FROM sbboardview WHERE sb_no=#{sb_no} 
+	</select>
+	
+	<update id="delete">
+		UPDATE sboard SET sb_del=1 WHERE sb_no=#{sb_no}
+	</update>
+	
+	<update id="update" parameterType="testDTO">
+		UPDATE sboard SET sb_title=#{sb_title}, sb_content=#{sb_content} WHERE sb_no=#{sb_no}
+	</update>
+
+	<select id="categoryList" resultType="hashMap">
+		SELECT sc_no, sc_category, sc_date FROM scategory 
+		WHERE sc_visible=1
+	</select>
+	
+	<update id="viewCount">
+		UPDATE sboard SET sb_count = sb_count + 1 WHERE sb_no=#{sb_no} 
+	</update>
+	
+	<insert id="like">
+		INSERT INTO slike (sb_no, sm_no) VALUES(#{sb_no}, (SELECT sm_no FROM smember WHERE sm_id=#{sm_id}))
+	</insert>
+	
+	<select resultType="Integer" id="likeCheck">
+		SELECT count(*) FROM slike 
+		WHERE sb_no=#{sb_no} 
+		AND sm_no=(SELECT sm_no FROM smember WHERE sm_id=#{sm_id})
+	</select>
+</mapper>

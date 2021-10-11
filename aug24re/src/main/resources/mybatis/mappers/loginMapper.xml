@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="login">
+	<select id="login" parameterType="loginDTO" resultType="loginDTO">
+		SELECT sm_no, sm_name, sm_id FROM sloginview 
+		WHERE sm_id=#{sm_id} 
+		AND sm_pw=HEX(AES_ENCRYPT(#{sm_pw},'sable'))
+	</select>
+	
+	<select id="login2" parameterType="loginDTO" resultType="loginDTO">
+		SELECT sm_no, sm_name, sm_id FROM sloginview 
+		WHERE sm_id=#{sm_id} 
+		AND AES_DECRYPT(UNHEX(sm_pw),'sable')=#{sm_pw}
+	</select>
+	
+	<select id="checkID" parameterType="String" resultType="String">
+		SELECT count(*) FROM smember WHERE sm_id=#{id}
+	</select>
+	
+	<insert id="join" parameterType="hashMap">
+		INSERT INTO smember (sm_id, sm_pw, sm_name, sm_email) 
+		VALUES(#{id}, HEX(AES_ENCRYPT(#{pw}, 'sable')), #{name}, #{email})
+	</insert>
+</mapper>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="admin">
+	
+	<select resultType="hashMap" id="getCategory">
+		SELECT sc_no, sc_category, sc_date, sc_visible FROM scategory 
+		<if test="sc_no != null">WHERE sc_no=#{sc_no} </if>
+	</select>
+	
+	<insert id="categoryInsert">
+		INSERT INTO scategory (sc_category) VALUES (#{categoryName}) 
+	</insert>
+	
+	<update id="categoryUpdate" parameterType="hashMap">
+		UPDATE scategory SET sc_category=#{category} WHERE sc_no=#{sc_no} 
+	</update>
+	
+	<select resultType="memberDTO" id="list">
+		SELECT sm_no, sm_id, sm_name, sm_joindate, sm_grade FROM smember 
+	</select>
+	
+	<update id="gradeUpDown" parameterType="memberDTO">
+		UPDATE smember SET sm_grade=#{sm_grade} WHERE sm_no=#{sm_no} 
+	</update>
+	
+	<update id="userDelete">
+		UPDATE smember SET sm_grade=0 WHERE sm_no=#{sm_no} 
+	</update>
+	
+	<update id="categoryVisible">
+		UPDATE scategory SET sc_visible=if(sc_visible = 1, 0, 1) WHERE sc_no=#{sc_no} 
+	</update>
+</mapper>
